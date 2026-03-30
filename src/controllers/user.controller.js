@@ -43,13 +43,15 @@ const registerUser = asyncHandler(async (req,res) => {
 
     //console.log(req.files);
 
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    //const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    const avatarLocalPath = req.files?.avatar?.[0]?.path;
+    const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
 
-    let coverImageLocalPath;
-    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
-        coverImageLocalPath = req.files.coverImage[0].path
-    }
+    console.log("avatarLocalPath:",avatarLocalPath);
+
+    // let coverImageLocalPath;
+    // if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+    //     coverImageLocalPath = req.files.coverImage[0].path
+    // }
     
 
     if (!avatarLocalPath) {
@@ -63,8 +65,10 @@ const registerUser = asyncHandler(async (req,res) => {
 
     //avatar sahi se upload hua ki ni check 
     if (!avatar) {
-        throw new ApiError(400, "Avatar file is required")
+        throw new ApiError(400, "Error uploading avatar on Cloudinary")
     }
+
+    console.log("Cloudinary avatar:",avatar);
 
     //user object create and entry in database
        const user = await User.create({
